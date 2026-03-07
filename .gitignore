@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+
+uploads/
+
+.env
+
+.claude/
+
+valid-ship-425513-q3-bd2c117e9b57.json

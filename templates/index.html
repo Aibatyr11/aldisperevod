@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Автономный переводчик</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+        .logo h1 {
+            margin: 0;
+            color: #333;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        textarea, select, button, input[type="file"] {
+            width: 100%;
+            display: block;
+            font-size: 16px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            font-size: 18px;
+            margin-top: 20px;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Company Logo">
+            <h1>Автономный переводчик</h1>
+        </div>
+        <form id="text-form">
+            <textarea name="text" rows="4" placeholder="Enter text to translate..."></textarea><br>
+            <select name="target_language">
+                <option value="kk">Kazakh</option>
+                <option value="en">English</option>
+                <option value="ru">Russian</option>
+                <!-- Add more language options as needed -->
+            </select><br>
+            <button type="submit">Перевести текст</button>
+        </form>
+        <form id="file-form" enctype="multipart/form-data">
+            <input type="file" name="file"><br>
+            <select name="target_language">
+                <option value="kk">Kazakh</option>
+                <option value="en">English</option>
+                <option value="ru">Russian</option>
+                <!-- Add more language options as needed -->
+            </select><br>
+            <button type="submit">Перевести</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#text-form').submit(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '/',
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#result').text(response.translated_text);
+                    }
+                });
+            });
+
+            $('#file-form').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    url: '/',
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('#result').text(response.translated_text);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
