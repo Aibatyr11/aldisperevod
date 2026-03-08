@@ -1,8 +1,19 @@
+# Python
 __pycache__/
 *.pyc
+*.pyo
 
+# Virtual environment
+venv/
+
+# Uploads
 uploads/
 
+# Environment variables
 .env
 
-valid-ship-425513-q3-bd2c117e9b57.json
+# Google credentials
+*.json
+
+# OS files
+.DS_Store
